@@ -14,12 +14,11 @@ def encode_output_data(input_json):
 	output_list = []
 	for key, value in input_json.items():
 		output_list.append({'key': key, 'value': value})
-
 	return output_list
 
-@tl.job(interval=timedelta(seconds=getenv(DATABOX_UPDATE_INTERVAL)))
+@tl.job(interval=timedelta(seconds=int(getenv("DATABOX_UPDATE_INTERVAL"))))
 def parse_and_push():
-	response = requests.get(getenv(COMBOT_LINK)) 						# получаем данные в от combot
+	response = requests.get(getenv("COMBOT_LINK")) 						# получаем данные в от combot
 	if response.ok == False:											# проверяем получены ли данные, если нет - выдаем ошибку и заканчиваем выполнение функции
 		print(f'Combot data parse error. Status code: {response.status_code}')
 		return
